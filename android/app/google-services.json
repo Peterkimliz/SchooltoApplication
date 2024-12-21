@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "1071135056608",
+    "project_id": "emarket-c1d86",
+    "storage_bucket": "emarket-c1d86.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071135056608:android:d0dfe43b25c31c43806685",
+        "android_client_info": {
+          "package_name": "com.schoolcommute.schoolcommute"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1071135056608-ppph1oebu2nnvq2hptdvkgqkp1epb9s4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzFi1WE9zxrV5dq0-0rIJJ2p2BSO3Yq3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1071135056608-ppph1oebu2nnvq2hptdvkgqkp1epb9s4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071135056608:android:667c3892a6b27c11806685",
+        "android_client_info": {
+          "package_name": "com.schoolto.schoolto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1071135056608-ppph1oebu2nnvq2hptdvkgqkp1epb9s4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzFi1WE9zxrV5dq0-0rIJJ2p2BSO3Yq3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1071135056608-ppph1oebu2nnvq2hptdvkgqkp1epb9s4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
