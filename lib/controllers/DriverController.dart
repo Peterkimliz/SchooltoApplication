@@ -22,33 +22,39 @@ import 'AuthenticationController.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class Drivercontroller extends GetxController {
   Rxn<File>? pickedImage = Rxn(null);
   RxBool loadingDrivers = RxBool(false);
+  RxBool onlineOfflineStatus = RxBool(false);
   RxBool loadingStudents = RxBool(false);
   RxBool loadingDriver = RxBool(false);
   RxList<DriverModel> drivers = RxList([]);
   RxList<StudentModel> students = RxList([]);
+  RxList<StudentModel> studentsWithinBounds = RxList([]);
   RxInt accountType = RxInt(0);
+  RxInt subStatus= RxInt(1);
   RxInt currentIndex = RxInt(0);
   List pages = [DriverMap(), DriverProfile()];
   TextEditingController textEdittingControllerName = TextEditingController();
   TextEditingController textEdittingControllerLocation =
-  TextEditingController();
+      TextEditingController();
   TextEditingController textEdittingControllerPhone = TextEditingController();
   TextEditingController textEdittingControllerVehiclePlate =
-  TextEditingController();
+      TextEditingController();
   TextEditingController textEdittingControllerVehicleType =
-  TextEditingController();
+      TextEditingController();
   GlobalKey<FormState> driverformKey = GlobalKey();
   GlobalKey<FormState> formKeyCar = GlobalKey();
 
-
-
   Rxn<Position> currentPosition = Rxn(null);
   Rxn<PlaceDetail> currentPlaceDetails = Rxn(null);
-  final Completer<GoogleMapController> controller = Completer<GoogleMapController>();
+  final Completer<GoogleMapController> controller =
+      Completer<GoogleMapController>();
   RxSet<Marker> markers = RxSet({});
+
+
   Future<Position> checkLocationPremission() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     LocationPermission permission = await Geolocator.checkPermission();
@@ -72,7 +78,7 @@ class Drivercontroller extends GetxController {
     }
 
     return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high)
+            desiredAccuracy: LocationAccuracy.high)
         .then((value) {
       return value;
     }).catchError((e) async {
@@ -87,6 +93,7 @@ class Drivercontroller extends GetxController {
       });
     });
   }
+
   getCurrentLocation() async {
     Position position = await checkLocationPremission();
     currentPosition.value = position;
@@ -137,105 +144,105 @@ class Drivercontroller extends GetxController {
     }
   }
 
-
   void getMarkers() async {
-    BitmapDescriptor sourceIcon =await BitmapDescriptor.asset(
+    BitmapDescriptor sourceIcon = await BitmapDescriptor.asset(
         ImageConfiguration.empty, "assets/images/marker.png");
 
-    for (StudentModel studentModel in students) {
+    for (StudentModel studentModel in studentsWithinBounds) {
       markers.add(Marker(
-        onTap: (){
-
-          showBottomSheet(context: Get.context!, builder: (_){
-            return Container(
-              height: 250,
-              padding: const EdgeInsets.all(10),
-              child: Container(
-                margin: const EdgeInsets.all(10),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                      BoxShadow(
-                          offset: Offset(0.3, 0.3),
-                          blurRadius: 0.1,
-                          spreadRadius: 0.1)
-                    ]),
-                child: Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        "assets/images/profile.png",
-                        height: 40,
-                        width: 40,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CommonText(
-                              name: studentModel.fullName!.capitalize!,
-                              fontFamily: "RedHatMedium",
-                              textSize: 18,
+          onTap: () {
+            showModalBottomSheet(
+                context: Get.context!,
+                builder: (_) {
+                  return Container(
+                    height: 250,
+                    padding: const EdgeInsets.all(10),
+                    child: Container(
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: const [
+                            BoxShadow(
+                                offset: Offset(0.3, 0.3),
+                                blurRadius: 0.1,
+                                spreadRadius: 0.1)
+                          ]),
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              "assets/images/profile.png",
+                              height: 40,
+                              width: 40,
+                              fit: BoxFit.cover,
                             ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            CommonText(
-                              name: studentModel.phone!,
-                              fontFamily: "RedHatMedium",
-                              textSize: 14,
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                const Icon(Icons.location_on),
-                                const SizedBox(
-                                  width: 2,
-                                ),
-                                Expanded(
-                                  child: CommonText(
-                                    name: studentModel.locationName!,
-                                    fontFamily: "RedHatMedium",
-                                    textSize: 14,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CommonText(
+                                name: studentModel.fullName!.capitalize!,
+                                fontFamily: "RedHatMedium",
+                                textSize: 18,
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              CommonText(
+                                name: studentModel.phone!,
+                                fontFamily: "RedHatMedium",
+                                textSize: 14,
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  const Icon(Icons.location_on),
+                                  const SizedBox(
+                                    width: 2,
                                   ),
-                                ),
-                              ],
+                                  Expanded(
+                                    child: CommonText(
+                                      name: studentModel.locationName!,
+                                      fontFamily: "RedHatMedium",
+                                      textSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )),
+                          InkWell(
+                            onTap: () async {
+                              final Uri phoneUri = Uri(
+                                  scheme: 'tel', path: "${studentModel.phone}");
+
+                              if (await canLaunchUrl(phoneUri)) {
+                                await launchUrl(phoneUri);
+                              } else {
+                                throw "Could not launch";
+                              }
+                            },
+                            child: Icon(
+                              Icons.phone,
+                              color: Colors.green,
                             ),
-                          ],
-                        )),
-                    InkWell(
-                      onTap: ()async {
-                        final Uri phoneUri=Uri(scheme: 'tel', path: "${studentModel.phone}");
-
-                        if(await canLaunchUrl(phoneUri)){
-                          await launchUrl(phoneUri);
-                        }else{
-                          throw "Could not launch";
-                        }
-
-                      },
-                      child: Icon(
-                        Icons.phone,
-                        color: Colors.green,
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                ),
-              ),
-            );
-          });
-        },
+                    ),
+                  );
+                });
+          },
           markerId: MarkerId(studentModel.id!),
           icon: sourceIcon,
           position: LatLng(studentModel.latitude!, studentModel.longitude!),
@@ -247,18 +254,6 @@ class Drivercontroller extends GetxController {
     print(
         "******************Markers length is ${markers.length}******************************");
   }
-
-
-
-
-
-
-
-
-
-
-
-
 
   Future pickImage({required int value, required bool upload}) async {
     Get.back();
@@ -274,7 +269,6 @@ class Drivercontroller extends GetxController {
   }
 
   saveDriverData({required BuildContext context}) async {
-
     try {
       if (driverformKey.currentState!.validate()) {
         Map<String, dynamic> body = {
@@ -307,8 +301,7 @@ class Drivercontroller extends GetxController {
             ),
             backgroundColor: Colors.red,
           ));
-        }
-        else {
+        } else {
           saveCreatedAccount();
           Get.back();
           getDriverById(Get.find<AuthenticationController>()
@@ -398,7 +391,6 @@ class Drivercontroller extends GetxController {
           Get.back();
           textEdittingControllerVehiclePlate.clear();
           textEdittingControllerVehicleType.clear();
-
         }
       }
       Get.back();
@@ -407,8 +399,6 @@ class Drivercontroller extends GetxController {
       print("Error is $e");
     }
   }
-
-
 
   getStudents() async {
     try {
@@ -428,20 +418,51 @@ class Drivercontroller extends GetxController {
 
   getStudentsByDriverAndLocation(
       {required double longitude, required double latitude}) async {
-
     try {
+      studentsWithinBounds.clear();
       String id = Get.find<AuthenticationController>().currentDriver.value!.id!;
       List response = await StudentService.getStudentsByDriverAndLocation(
           id: id, latitude: latitude, longitude: longitude);
-      List<StudentModel> std =
-          response.map((e) => StudentModel.fromJson(e)).toList();
+      List<StudentModel> std = response.map((e) => StudentModel.fromJson(e)).toList();
+      studentsWithinBounds.assignAll(std);
       for (StudentModel studentModel in std) {
         NotificationService.sendChatNotification(
             email: studentModel.email!, message: "Driver is near your home");
       }
-
     } catch (e) {
       print("error Occurred is $e");
     }
+  }
+
+  Future<void> changeOnlineStatus(bool state) async {
+    onlineOfflineStatus.value = state;
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool("onlineStatus", state);
+    getOnlineStatus();
+  }
+
+  getOnlineStatus() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    bool? state = sharedPreferences.getBool("onlineStatus");
+    onlineOfflineStatus.value = state ?? false;
+  }
+  @override
+  void onInit() {
+   getOnlineStatus();
+    super.onInit();
+  }
+
+   updateStudentStatus({String? id}) async{
+     try{
+       showDefaultGetDialog(message: "updating student status...");
+       bool sub = subStatus.value == 1 ? false : true;
+      int index = students.indexWhere((e) => e.id == id);
+      students.elementAt(index).subscribed = sub;
+      students.refresh();
+      await StudentService.updateSubStatus(id: id, status: sub);
+      Get.back();
+    }catch(e){
+       Get.back();
+     }
   }
 }

@@ -470,9 +470,7 @@ class StudentProfile extends StatelessWidget {
   Widget editIcon() {
     return InkWell(
         onTap: () {
-          Get.to(() => EditPage(),
-              duration: const Duration(milliseconds: 3000),
-              transition: Transition.cupertino);
+          Get.to(() => EditPage(),);
         },
         child: const Icon(Icons.edit));
   }

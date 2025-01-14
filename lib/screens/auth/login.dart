@@ -136,8 +136,7 @@ class LoginPage extends StatelessWidget {
                     InkWell(
                       onTap: () {
                         Get.to(() => SignUp(),
-                            duration: Duration(milliseconds: 4000),
-                            transition: Transition.circularReveal);
+                            );
                       },
                       child: CommonText(
                         name: "Sign Up",

@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:schoolsto/controllers/AuthenticationController.dart';
+import 'package:schoolsto/controllers/DriverController.dart';
 import 'package:schoolsto/models/driver_model.dart';
 import 'package:schoolsto/models/student_model.dart';
 import 'package:schoolsto/screens/student/home/student_home.dart';
 import 'package:schoolsto/screens/student/home/student_map.dart';
 import 'package:schoolsto/screens/student/profile/student_profile.dart';
+import 'package:schoolsto/services/end_point.dart';
 import 'package:schoolsto/services/student.dart';
 import 'package:schoolsto/utils/functions.dart';
 import 'package:schoolsto/widgets/common_text.dart';
@@ -21,6 +23,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../models/place_details.dart';
 import '../utils/constants/constants.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+
 
 class StudentController extends GetxController {
   Rxn<File>? pickedImage = Rxn(null);
@@ -36,6 +40,14 @@ class StudentController extends GetxController {
 
   Rxn<Position> currentPosition = Rxn(null);
   Rxn<PlaceDetail> currentPlaceDetails = Rxn(null);
+
+  RxMap<PolylineId, Polyline> polylines = RxMap({});
+  List<LatLng> polylineCoordinates = [];
+  PolylinePoints polylinePoints = PolylinePoints();
+  RxSet<Marker> markers = RxSet({});
+
+
+
 
   Future<Position> checkLocationPremission() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -280,22 +292,57 @@ class StudentController extends GetxController {
    }
 
 
-  // void getPolyPoints() async {
-  //   PolylinePoints polylinePoints = PolylinePoints();
-  //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-  //     'AIzaSyCZTHRIVPFNa0MenzZow1fxmQmBAoRlpbU', // Your Google Map Key
-  //     PointLatLng(widget.sourcelat, widget.sourcelong),
-  //     PointLatLng(widget.destlat, widget.destlong),
-  //   );
-  //   if (result.points.isNotEmpty) {
-  //     result.points.forEach(
-  //           (PointLatLng point) => polylineCoordinates.add(
-  //         LatLng(point.latitude, point.longitude),
-  //       ),
-  //     );
-  //     setState(() {});
-  //   }
-  // }
+  getPolyline() async {
+    AuthenticationController authenticationController = Get.find<AuthenticationController>();
+    await Get.find<Drivercontroller>().getDriverById(authenticationController.currentStudent.value!.driver!.id!);
+    polylineCoordinates.clear();
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      googleApiKey: mapKey,
+      request: PolylineRequest(
+        origin: PointLatLng(
+            authenticationController.currentStudent.value!.latitude!,
+            authenticationController.currentStudent.value!.longitude!),
+        destination: PointLatLng(
+            authenticationController.currentDriver.value!.location!.latitude!,
+            authenticationController.currentDriver.value!.location!.longitude!
+        ),
+        mode: TravelMode.driving,
+
+      ),
+    );
+    if (result.points.isNotEmpty) {
+      for (var point in result.points) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      }
+    }
+    PolylineId id = PolylineId("poly");
+    Polyline polyline = Polyline(polylineId: id, color: Colors.red, points: polylineCoordinates);
+    polylines[id] = polyline;
+    polylines.refresh();
+    getMarkers( authenticationController.currentDriver.value!);
+
+  }
+
+  void getMarkers(DriverModel driver) async {
+    BitmapDescriptor sourceIcon = await BitmapDescriptor.asset(
+        ImageConfiguration.empty, "assets/images/bus-station.png",height: 50,width: 50);
+
+
+      markers.add(Marker(
+          onTap: () {
+
+          },
+          markerId: MarkerId(driver.id!),
+          icon: sourceIcon,
+          position: LatLng(driver.location!.latitude!, driver.location!.longitude!),
+          infoWindow: InfoWindow(title: driver.fullname)));
+
+
+    markers.refresh();
+
+    print(
+        "******************Markers length is ${markers.length}******************************");
+  }
 
 
 }

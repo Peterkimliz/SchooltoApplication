@@ -6,7 +6,8 @@ const String oneSignalApiUrl = "https://api.onesignal.com/notifications?c=push";
 const String oneSignalApiKey = "NWFjNjUzNDYtZjhhOC00NmM2LTgxYzQtYWU4ZjlhOWQ3MTcz";
 const productionUrl = "https://schoolstoapi.onrender.com/api/v1";
 const baseUrl =
+
 // kDebugMode == true
-//     ? "http://192.168.12.132:8080/api/v1"
-//     :
+    // ? "http://192.168.65.132:8080/api/v1"
+    // :
 "https://schoolstoapi.onrender.com/api/v1";

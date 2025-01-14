@@ -175,10 +175,7 @@ class DriverProfile extends StatelessWidget {
                                                   onTap: () {
                                                     Get.back();
                                                     Get.to(() => CarAdd(),
-                                                        transition:
-                                                            Transition.zoom,
-                                                        duration: Duration(
-                                                            seconds: 3));
+                                                        );
                                                   },
                                                   child: Row(
                                                     mainAxisAlignment:
@@ -275,10 +272,7 @@ class DriverProfile extends StatelessWidget {
                               child: InkWell(
                                 onTap: (){
                                   Get.to(() => StudentsPage(),
-                                      transition:
-                                      Transition.zoom,
-                                      duration: const Duration(
-                                          seconds: 1));
+                                     );
                                 },
                                 child: Row(
                                   mainAxisAlignment:
@@ -311,10 +305,7 @@ class DriverProfile extends StatelessWidget {
                                   const EdgeInsets.symmetric(vertical: 10.0),
                               child: InkWell(
                                 onTap: () {
-                                  Get.to(() => EditPage(),
-                                      duration:
-                                          const Duration(milliseconds: 3000),
-                                      transition: Transition.cupertino);
+                                  Get.to(() => EditPage());
                                 },
                                 child: Row(
                                   mainAxisAlignment:

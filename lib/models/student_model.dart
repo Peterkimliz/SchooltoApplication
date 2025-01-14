@@ -12,6 +12,7 @@ class StudentModel {
   String? locationName;
   double? latitude;
   double? longitude;
+  bool? subscribed;
   DriverModel? driver;
   SchoolModel? schoolModel;
 
@@ -26,11 +27,13 @@ class StudentModel {
       this.phone,
       this.driver,
       this.schoolModel,
-      this.avator});
+      this.avator,
+      this.subscribed});
 
   factory StudentModel.fromJson(Map<String, dynamic> json) => StudentModel(
         id: json["id"],
-        avator: json["avator"]??"",
+        subscribed: json["subscribed"],
+        avator: json["avator"] ?? "",
         phone: json["phoneNumber"],
         parentName: json["parentName"],
         email: json["email"],
