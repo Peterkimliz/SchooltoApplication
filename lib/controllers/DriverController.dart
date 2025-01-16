@@ -34,7 +34,7 @@ class Drivercontroller extends GetxController {
   RxList<StudentModel> students = RxList([]);
   RxList<StudentModel> studentsWithinBounds = RxList([]);
   RxInt accountType = RxInt(0);
-  RxInt subStatus= RxInt(1);
+  RxInt subStatus = RxInt(1);
   RxInt currentIndex = RxInt(0);
   List pages = [DriverMap(), DriverProfile()];
   TextEditingController textEdittingControllerName = TextEditingController();
@@ -53,7 +53,6 @@ class Drivercontroller extends GetxController {
   final Completer<GoogleMapController> controller =
       Completer<GoogleMapController>();
   RxSet<Marker> markers = RxSet({});
-
 
   Future<Position> checkLocationPremission() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -107,8 +106,9 @@ class Drivercontroller extends GetxController {
     print("Your Current position is ${position.toJson()}");
   }
 
-  getPlaceDetails(double latitude, double longitude) async {
-    Get.dialog(
+  getPlaceDetails(double latitude, double longitude,{bool showDialog=true}) async {
+    if(showDialog) {
+      Get.dialog(
         barrierDismissible: false,
         Dialog(
           child: Container(
@@ -126,6 +126,7 @@ class Drivercontroller extends GetxController {
             ),
           ),
         ));
+    }
     final url =
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$mapKey';
     final response = await http.get(Uri.parse(url));
@@ -423,7 +424,8 @@ class Drivercontroller extends GetxController {
       String id = Get.find<AuthenticationController>().currentDriver.value!.id!;
       List response = await StudentService.getStudentsByDriverAndLocation(
           id: id, latitude: latitude, longitude: longitude);
-      List<StudentModel> std = response.map((e) => StudentModel.fromJson(e)).toList();
+      List<StudentModel> std =
+          response.map((e) => StudentModel.fromJson(e)).toList();
       studentsWithinBounds.assignAll(std);
       for (StudentModel studentModel in std) {
         NotificationService.sendChatNotification(
@@ -446,23 +448,39 @@ class Drivercontroller extends GetxController {
     bool? state = sharedPreferences.getBool("onlineStatus");
     onlineOfflineStatus.value = state ?? false;
   }
+
   @override
   void onInit() {
-   getOnlineStatus();
+    getOnlineStatus();
     super.onInit();
   }
 
-   updateStudentStatus({String? id}) async{
-     try{
-       showDefaultGetDialog(message: "updating student status...");
-       bool sub = subStatus.value == 1 ? false : true;
+  updateStudentStatus({String? id}) async {
+    try {
+      showDefaultGetDialog(message: "updating student status...");
+      bool sub = subStatus.value == 1 ? false : true;
       int index = students.indexWhere((e) => e.id == id);
       students.elementAt(index).subscribed = sub;
       students.refresh();
       await StudentService.updateSubStatus(id: id, status: sub);
       Get.back();
-    }catch(e){
-       Get.back();
-     }
+    } catch (e) {
+      Get.back();
+    }
+  }
+
+  updateDriverLocation() async {
+    try {
+     var response= await DriverService.updateCurrentLocation(
+          id: Get.find<AuthenticationController>().currentDriver.value!.id,
+          latitude:currentPlaceDetails.value!.latitude!,
+      longitude:currentPlaceDetails.value!.longitude!,
+      name: currentPlaceDetails.value!.name,
+      );
+     print("updated response is $response");
+      Get.back();
+    } catch (e) {
+      Get.back();
+    }
   }
 }

@@ -29,6 +29,12 @@ class DriverService{
     return jsonDecode(response);
 
   }
+  static updateCurrentLocation({String? id, required double latitude, required double longitude, String? name})async {
+    var response = await DbBase.databaseRequest(
+        "$driver/updateLocation/$id/$latitude/$longitude/$name",
+        DbBase.putRequest);
+    return jsonDecode(response);
+  }
 
 
 }

@@ -37,7 +37,14 @@ class _DriverMapState extends State<DriverMap> {
             drivercontroller.currentPosition.value!.longitude),
         zoom: 14.0)));
 
+
     if(drivercontroller.onlineOfflineStatus.value){
+      await drivercontroller.getPlaceDetails(
+           drivercontroller.currentPosition.value!.longitude,
+           drivercontroller.currentPosition.value!.latitude,
+        showDialog: false
+      );
+      drivercontroller.updateDriverLocation();
       drivercontroller.getStudentsByDriverAndLocation(
           longitude: drivercontroller.currentPosition.value!.longitude,
           latitude: drivercontroller.currentPosition.value!.latitude);
