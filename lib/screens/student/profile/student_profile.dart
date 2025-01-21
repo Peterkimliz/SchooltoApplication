@@ -148,12 +148,12 @@ class StudentProfile extends StatelessWidget {
                                     fit: BoxFit.cover,
                                   )
                                 : authenticationController
-                                        .currentStudent.value!.avator!
+                                        .currentStudent.value!.image!
                                         .trim()
                                         .isNotEmpty
                                     ? Image.network(
                                         authenticationController
-                                            .currentStudent.value!.avator!,
+                                            .currentStudent.value!.image!,
                                         height: 120,
                                         width: 120,
                                         fit: BoxFit.cover,
@@ -391,69 +391,128 @@ class StudentProfile extends StatelessWidget {
                                             offset: Offset(0.2, 0.2),
                                             blurRadius: 0.7)
                                       ]),
-                                  child: Row(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: Image.asset(
-                                          "assets/images/profile.png",
-                                          height: 40,
-                                          width: 40,
-                                          fit: BoxFit.cover,
+                                      Align(
+                                        alignment: Alignment.topRight,
+                                        child: PopupMenuButton(
+                                          onSelected: (value) {
+                                            if(value==1){
+                                              showDialog(
+                                                  context: Get.context!,
+                                                  builder: (_) {
+                                                    return AlertDialog(
+                                                      title: CommonText(
+                                                        name: "Detach Driver",
+                                                        fontWeight: FontWeight.bold,
+                                                        fontFamily: "RedHatMedium",
+                                                        textSize: 20.0,
+                                                      ),
+                                                      actions: [
+                                                        TextButton(
+                                                            onPressed: () {
+                                                              Get.back();
+                                                            },
+                                                            child: CommonText(
+                                                              name: "Cancel".toUpperCase(),
+                                                              fontFamily: "RedHatMedium",
+                                                              fontWeight: FontWeight.bold,
+                                                              textColor: Colors.red,
+                                                            )),
+                                                        TextButton(
+                                                            onPressed: () {
+                                                              Get.back();
+                                                              Get.find<StudentController>().detachDriver();
+                                                            },
+                                                            child: CommonText(
+                                                              name: "Okay".toUpperCase(),
+                                                              fontFamily: "RedHatMedium",
+                                                              fontWeight: FontWeight.bold,
+                                                              textColor: Colors.amber,
+                                                            ))
+                                                      ],
+                                                    );
+                                                  });
+                                            }
+                                          },
+                                          icon: const Icon(Icons.more_vert),
+                                          itemBuilder: (BuildContext context) {
+                                            return [
+                                              const PopupMenuItem(
+                                                value:0,
+                                                child: Text('Detach'),
+                                              ),
+
+                                            ];
+                                          },
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            CommonText(
-                                              name: authenticationController
-                                                  .currentStudent
-                                                  .value!
-                                                  .driver!
-                                                  .fullname!
-                                                  .capitalize!,
-                                              fontFamily: "RedHatMedium",
+                                      Row(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(20),
+                                            child: Image.asset(
+                                              "assets/images/profile.png",
+                                              height: 40,
+                                              width: 40,
+                                              fit: BoxFit.cover,
                                             ),
-                                            CommonText(
-                                              name: authenticationController
-                                                  .currentStudent
-                                                  .value!
-                                                  .driver!
-                                                  .phoneNumber!,
-                                              fontWeight: FontWeight.bold,
-                                              textSize: 12,
-                                            ),
-                                            CommonText(
-                                              name: authenticationController
-                                                  .currentStudent
-                                                  .value!
-                                                  .driver!
-                                                  .email!,
-                                            ),
-                                            SizedBox(height: 5,),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                const Icon(Icons.location_on),
-                                                Expanded(
-                                                  child: CommonText(
-                                                      name:
-                                                      authenticationController
-                                                          .currentStudent
-                                                          .value!
-                                                          .driver!
-                                                          .locationName!),
+                                                CommonText(
+                                                  name: authenticationController
+                                                      .currentStudent
+                                                      .value!
+                                                      .driver!
+                                                      .fullname!
+                                                      .capitalize!,
+                                                  fontFamily: "RedHatMedium",
+                                                ),
+                                                CommonText(
+                                                  name: authenticationController
+                                                      .currentStudent
+                                                      .value!
+                                                      .driver!
+                                                      .phoneNumber!,
+                                                  fontWeight: FontWeight.bold,
+                                                  textSize: 12,
+                                                ),
+                                                CommonText(
+                                                  name: authenticationController
+                                                      .currentStudent
+                                                      .value!
+                                                      .driver!
+                                                      .email!,
+                                                ),
+                                                SizedBox(height: 5,),
+                                                Row(
+                                                  mainAxisSize: MainAxisSize.max,
+                                                  children: [
+                                                    const Icon(Icons.location_on),
+                                                    Expanded(
+                                                      child: CommonText(
+                                                          name:
+                                                          authenticationController
+                                                              .currentStudent
+                                                              .value!
+                                                              .driver!
+                                                              .locationName!),
+                                                    )
+                                                  ],
                                                 )
                                               ],
-                                            )
-                                          ],
-                                        ),
-                                      )
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 )

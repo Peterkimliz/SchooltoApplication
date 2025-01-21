@@ -56,5 +56,14 @@ class StudentService {
     return jsonDecode(response);
   }
 
+  static detachDriver({required String id}) async{
+    var response = await DbBase.databaseRequest(
+        "$student/detachDriver/$id",
+        DbBase.putRequest);
+    return jsonDecode(response);
+
+
+  }
+
 
 }

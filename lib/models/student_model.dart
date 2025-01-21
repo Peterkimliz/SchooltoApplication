@@ -6,7 +6,7 @@ class StudentModel {
   String? id;
   String? email;
   String? fullName;
-  String? avator;
+  String? image;
   String? phone;
   String? parentName;
   String? locationName;
@@ -27,13 +27,13 @@ class StudentModel {
       this.phone,
       this.driver,
       this.schoolModel,
-      this.avator,
+      this.image,
       this.subscribed});
 
   factory StudentModel.fromJson(Map<String, dynamic> json) => StudentModel(
         id: json["id"],
         subscribed: json["subscribed"],
-        avator: json["avator"] ?? "",
+        image: json["image"] ?? "",
         phone: json["phoneNumber"],
         parentName: json["parentName"],
         email: json["email"],

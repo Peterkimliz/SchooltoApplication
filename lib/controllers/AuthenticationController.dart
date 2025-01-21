@@ -148,10 +148,12 @@ class AuthenticationController extends GetxController {
 
   getUserDetails() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    // sharedPreferences.clear();
     String userId = sharedPreferences.getString("userId") ?? "";
     String type = sharedPreferences.getString("type") ?? "";
     String email = sharedPreferences.getString("email") ?? "";
+    print("email is $email");
+    print("email is $type");
+    print("email is $userId");
     bool isLoggedIn = sharedPreferences.getBool("accountCreated") ?? false;
     LoggedData loggedData = LoggedData(userId: userId, accountCreated: isLoggedIn, type: type, email: email);
     loggedInUserData.value = loggedData;

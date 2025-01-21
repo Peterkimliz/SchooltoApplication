@@ -8,7 +8,7 @@ class DriverModel {
   String? email;
   String? fullname;
   String? phoneNumber;
-  String? avator;
+  String? image;
   String? type;
   String? locationName;
   DriverLocation? location;
@@ -18,7 +18,7 @@ class DriverModel {
   DriverModel(
       {this.email,
       this.fullname,
-      this.avator,
+      this.image,
       this.type,
       this.locationName,
       this.vehicle,
@@ -31,7 +31,7 @@ class DriverModel {
     id: json["id"],
     location: DriverLocation.fromJson(json["location"]),
     fullname: json["fullName"],
-    avator: json["avator"],
+    image: json["image"],
     type: json["type"],
     phoneNumber: json["phoneNumber"],
     locationName: json["locationName"],

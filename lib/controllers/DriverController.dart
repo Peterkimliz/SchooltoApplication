@@ -272,6 +272,7 @@ class Drivercontroller extends GetxController {
   saveDriverData({required BuildContext context}) async {
     try {
       if (driverformKey.currentState!.validate()) {
+        await Get.find<AuthenticationController>().getUserDetails();
         Map<String, dynamic> body = {
           "fullName": textEdittingControllerName.text,
           "phoneNumber": textEdittingControllerPhone.text,
@@ -288,6 +289,7 @@ class Drivercontroller extends GetxController {
           "latitude": currentPlaceDetails.value!.latitude,
           "longitude": currentPlaceDetails.value!.longitude
         };
+        print("The  body is ${body}");
 
         showDefaultGetDialog(message: "Saving your data...");
         var response = await DriverService.createDriver(body);
