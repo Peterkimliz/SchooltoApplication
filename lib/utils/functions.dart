@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:schoolsto/controllers/DriverController.dart';
 import 'package:schoolsto/controllers/student_controller.dart';
@@ -5,10 +6,25 @@ import 'package:schoolsto/widgets/common_text.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'colors.dart';
 
 
 
 
+showDefaultSnackBar({required String message, Color color = mainColor}) {
+  return ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+    content: Text(
+      message,
+      style: const TextStyle(color: Colors.white),
+    ),
+    backgroundColor: color,
+  ));
+}
+debugPrintMessage(data) {
+  if (kDebugMode) {
+    print(data);
+  }
+}
 
 showDefaultGetDialog({required String message}
     ){

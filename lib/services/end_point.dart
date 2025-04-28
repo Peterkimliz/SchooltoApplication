@@ -3,6 +3,9 @@ import 'package:schoolsto/utils/constants/constants.dart';
 const auth="$baseUrl/auth";
 const signIn="$auth/signin";
 const signUp="$auth/signup";
+const verification="$auth/verification";
+const resetPassword="$auth/resetPassword";
+const resend="$auth/resend";
 
 //student routes
 const student="$baseUrl/student";

@@ -39,26 +39,26 @@ class Drivercontroller extends GetxController {
   List pages = [DriverMap(), DriverProfile()];
   TextEditingController textEdittingControllerName = TextEditingController();
   TextEditingController textEdittingControllerLocation =
-      TextEditingController();
+  TextEditingController();
   TextEditingController textEdittingControllerPhone = TextEditingController();
   TextEditingController textEdittingControllerVehiclePlate =
-      TextEditingController();
+  TextEditingController();
   TextEditingController textEdittingControllerVehicleType =
-      TextEditingController();
+  TextEditingController();
   GlobalKey<FormState> driverformKey = GlobalKey();
   GlobalKey<FormState> formKeyCar = GlobalKey();
 
   Rxn<Position> currentPosition = Rxn(null);
   Rxn<PlaceDetail> currentPlaceDetails = Rxn(null);
   final Completer<GoogleMapController> controller =
-      Completer<GoogleMapController>();
+  Completer<GoogleMapController>();
   RxSet<Marker> markers = RxSet({});
 
   Future<Position> checkLocationPremission() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     LocationPermission permission = await Geolocator.checkPermission();
     if (!serviceEnabled) {
-      // do what you want
+      // do what you want here
     }
 
     if (permission == LocationPermission.denied) {
@@ -77,7 +77,7 @@ class Drivercontroller extends GetxController {
     }
 
     return await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high)
+        desiredAccuracy: LocationAccuracy.high)
         .then((value) {
       return value;
     }).catchError((e) async {
@@ -106,26 +106,27 @@ class Drivercontroller extends GetxController {
     print("Your Current position is ${position.toJson()}");
   }
 
-  getPlaceDetails(double latitude, double longitude,{bool showDialog=true}) async {
-    if(showDialog) {
+  getPlaceDetails(double latitude, double longitude,
+      {bool showDialog = true}) async {
+    if (showDialog) {
       Get.dialog(
-        barrierDismissible: false,
-        Dialog(
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(20)),
-            child: const Row(
-              children: [
-                Text("Getting Place details"),
-                SizedBox(
-                  width: 10,
-                ),
-                CircularProgressIndicator()
-              ],
+          barrierDismissible: false,
+          Dialog(
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              child: const Row(
+                children: [
+                  Text("Getting Place details"),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  CircularProgressIndicator()
+                ],
+              ),
             ),
-          ),
-        ));
+          ));
     }
     final url =
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$mapKey';
@@ -186,42 +187,42 @@ class Drivercontroller extends GetxController {
                           ),
                           Expanded(
                               child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CommonText(
-                                name: studentModel.fullName!.capitalize!,
-                                fontFamily: "RedHatMedium",
-                                textSize: 18,
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              CommonText(
-                                name: studentModel.phone!,
-                                fontFamily: "RedHatMedium",
-                                textSize: 14,
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Icon(Icons.location_on),
-                                  const SizedBox(
-                                    width: 2,
+                                  CommonText(
+                                    name: studentModel.fullName!.capitalize!,
+                                    fontFamily: "RedHatMedium",
+                                    textSize: 18,
                                   ),
-                                  Expanded(
-                                    child: CommonText(
-                                      name: studentModel.locationName!,
-                                      fontFamily: "RedHatMedium",
-                                      textSize: 14,
-                                    ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  CommonText(
+                                    name: studentModel.phone!,
+                                    fontFamily: "RedHatMedium",
+                                    textSize: 14,
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      const Icon(Icons.location_on),
+                                      const SizedBox(
+                                        width: 2,
+                                      ),
+                                      Expanded(
+                                        child: CommonText(
+                                          name: studentModel.locationName!,
+                                          fontFamily: "RedHatMedium",
+                                          textSize: 14,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
-                              ),
-                            ],
-                          )),
+                              )),
                           InkWell(
                             onTap: () async {
                               final Uri phoneUri = Uri(
@@ -253,7 +254,8 @@ class Drivercontroller extends GetxController {
     markers.refresh();
 
     print(
-        "******************Markers length is ${markers.length}******************************");
+        "******************Markers length is ${markers
+            .length}******************************");
   }
 
   Future pickImage({required int value, required bool upload}) async {
@@ -277,11 +279,13 @@ class Drivercontroller extends GetxController {
           "fullName": textEdittingControllerName.text,
           "phoneNumber": textEdittingControllerPhone.text,
           "type": accountType.value == 0 ? "freelancer" : "school",
-          "id": Get.find<AuthenticationController>()
+          "id": Get
+              .find<AuthenticationController>()
               .loggedInUserData
               .value!
               .userId,
-          "email": Get.find<AuthenticationController>()
+          "email": Get
+              .find<AuthenticationController>()
               .loggedInUserData
               .value!
               .email,
@@ -307,7 +311,8 @@ class Drivercontroller extends GetxController {
         } else {
           saveCreatedAccount();
           Get.back();
-          getDriverById(Get.find<AuthenticationController>()
+          getDriverById(Get
+              .find<AuthenticationController>()
               .loggedInUserData
               .value!
               .userId);
@@ -322,8 +327,12 @@ class Drivercontroller extends GetxController {
   }
 
   bool validateData() {
-    if (textEdittingControllerName.text.trim().isEmpty ||
-        textEdittingControllerPhone.text.trim().isEmpty) {
+    if (textEdittingControllerName.text
+        .trim()
+        .isEmpty ||
+        textEdittingControllerPhone.text
+            .trim()
+            .isEmpty) {
       return false;
     } else {
       return true;
@@ -338,7 +347,7 @@ class Drivercontroller extends GetxController {
       loadingDrivers.value = false;
       if (response.isNotEmpty) {
         List<DriverModel> drive =
-            response.map((e) => DriverModel.fromJson(e)).toList();
+        response.map((e) => DriverModel.fromJson(e)).toList();
         drivers.assignAll(drive);
       }
     } catch (e) {
@@ -350,7 +359,7 @@ class Drivercontroller extends GetxController {
   getDriverById(String id) async {
     try {
       AuthenticationController authenticationController =
-          Get.find<AuthenticationController>();
+      Get.find<AuthenticationController>();
       drivers.clear();
       loadingDriver.value = true;
       var response = await DriverService.getDriverById(id);
@@ -386,10 +395,17 @@ class Drivercontroller extends GetxController {
         } else {
           var responseData = await DriverService.assignDriverToCar(
               driverId:
-                  Get.find<AuthenticationController>().currentDriver.value!.id!,
+              Get
+                  .find<AuthenticationController>()
+                  .currentDriver
+                  .value!
+                  .id!,
               carId: response["id"]);
           DriverModel driverModel = DriverModel.fromJson(responseData);
-          Get.find<AuthenticationController>().currentDriver.value =
+          Get
+              .find<AuthenticationController>()
+              .currentDriver
+              .value =
               driverModel;
           Get.back();
           textEdittingControllerVehiclePlate.clear();
@@ -406,11 +422,15 @@ class Drivercontroller extends GetxController {
   getStudents() async {
     try {
       loadingStudents.value = true;
-      String id = Get.find<AuthenticationController>().currentDriver.value!.id!;
+      String id = Get
+          .find<AuthenticationController>()
+          .currentDriver
+          .value!
+          .id!;
       List response = await StudentService.getStudentsByDriver(id: id);
 
       List<StudentModel> std =
-          response.map((e) => StudentModel.fromJson(e)).toList();
+      response.map((e) => StudentModel.fromJson(e)).toList();
       students.assignAll(std);
       loadingStudents.value = false;
     } catch (e) {
@@ -423,11 +443,15 @@ class Drivercontroller extends GetxController {
       {required double longitude, required double latitude}) async {
     try {
       studentsWithinBounds.clear();
-      String id = Get.find<AuthenticationController>().currentDriver.value!.id!;
+      String id = Get
+          .find<AuthenticationController>()
+          .currentDriver
+          .value!
+          .id!;
       List response = await StudentService.getStudentsByDriverAndLocation(
           id: id, latitude: latitude, longitude: longitude);
       List<StudentModel> std =
-          response.map((e) => StudentModel.fromJson(e)).toList();
+      response.map((e) => StudentModel.fromJson(e)).toList();
       studentsWithinBounds.assignAll(std);
       for (StudentModel studentModel in std) {
         NotificationService.sendChatNotification(
@@ -462,7 +486,9 @@ class Drivercontroller extends GetxController {
       showDefaultGetDialog(message: "updating student status...");
       bool sub = subStatus.value == 1 ? false : true;
       int index = students.indexWhere((e) => e.id == id);
-      students.elementAt(index).subscribed = sub;
+      students
+          .elementAt(index)
+          .subscribed = sub;
       students.refresh();
       await StudentService.updateSubStatus(id: id, status: sub);
       Get.back();
@@ -473,13 +499,17 @@ class Drivercontroller extends GetxController {
 
   updateDriverLocation() async {
     try {
-     var response= await DriverService.updateCurrentLocation(
-          id: Get.find<AuthenticationController>().currentDriver.value!.id,
-          latitude:currentPlaceDetails.value!.latitude!,
-      longitude:currentPlaceDetails.value!.longitude!,
-      name: currentPlaceDetails.value!.name,
+      var response = await DriverService.updateCurrentLocation(
+        id: Get
+            .find<AuthenticationController>()
+            .currentDriver
+            .value!
+            .id,
+        latitude: currentPlaceDetails.value!.latitude!,
+        longitude: currentPlaceDetails.value!.longitude!,
+        name: currentPlaceDetails.value!.name,
       );
-     print("updated response is $response");
+      print("updated response is $response");
       Get.back();
     } catch (e) {
       Get.back();

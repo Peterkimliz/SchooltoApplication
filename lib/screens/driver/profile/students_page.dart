@@ -280,14 +280,17 @@ class StudentsPage extends StatelessWidget {
             itemCount: drivercontroller.students.length,
             shrinkWrap: true,
           )
-              : Center(
-            child: CommonText(
-              name:
-              "You currently don't have any students assigned to you",
-              textSize: 16,
-              fontFamily: "RedHatMedium",
-            ),
-          );
+              : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                            child: CommonText(
+                name:
+                "You currently don't have\n any students assigned to you",
+                textSize: 20,
+                fontFamily: "RedHatMedium",
+                            ),
+                          ),
+              );
         }),
       ),
     );

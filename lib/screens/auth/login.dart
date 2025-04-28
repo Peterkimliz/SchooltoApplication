@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:schoolsto/controllers/AuthenticationController.dart';
+import 'package:schoolsto/screens/auth/forgot_password.dart';
 import 'package:schoolsto/screens/auth/signup.dart';
 import 'package:schoolsto/widgets/common_text.dart';
 import 'package:schoolsto/widgets/custom_button.dart';
@@ -9,6 +10,7 @@ class LoginPage extends StatelessWidget {
   LoginPage({super.key}) {
     authenticationController.clearTextFields();
   }
+
   final AuthenticationController authenticationController =
       Get.find<AuthenticationController>();
 
@@ -118,12 +120,28 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-               CustomButton(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => ForgotPassword());
+                      },
+                      child: CommonText(
+                        name: "Forgot Password?",
+                        fontFamily: "RedHatMedium",
+                        textDecoration: TextDecoration.underline,
+                        textColor: Colors.amber,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                CustomButton(
                     title: "Login",
                     onTap: () {
                       authenticationController.signInAccount();
                     }),
-                
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -135,8 +153,9 @@ class LoginPage extends StatelessWidget {
                     SizedBox(width: 5),
                     InkWell(
                       onTap: () {
-                        Get.to(() => SignUp(),
-                            );
+                        Get.to(
+                          () => SignUp(),
+                        );
                       },
                       child: CommonText(
                         name: "Sign Up",

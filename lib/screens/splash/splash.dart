@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:schoolsto/controllers/AuthenticationController.dart';
 import 'package:schoolsto/controllers/DriverController.dart';
 import 'package:schoolsto/controllers/student_controller.dart';
+import 'package:schoolsto/screens/auth/email_verification.dart';
 import 'package:schoolsto/screens/auth/login.dart';
 import 'package:get/get.dart';
 import 'package:schoolsto/screens/driver/home/driver_home.dart';
@@ -19,7 +20,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  AuthenticationController authenticationController = Get.find<AuthenticationController>();
+  AuthenticationController authenticationController =
+      Get.find<AuthenticationController>();
   Drivercontroller drivercontroller = Get.find<Drivercontroller>();
   StudentController studentController = Get.find<StudentController>();
 
@@ -27,37 +29,39 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Timer(
       const Duration(milliseconds: 4000),
-      () async{
-       await authenticationController.getUserDetails();
-       if(authenticationController.loggedInUserData.value==null){
-         Get.off(() => LoginPage());
-       }
-        else if(authenticationController.loggedInUserData.value!.userId.isEmpty) {
+      () async {
+        await authenticationController.getUserDetails();
+        if (authenticationController.loggedInUserData.value == null) {
+          Get.off(() => LoginPage());
+        } else if (authenticationController
+            .loggedInUserData.value!.userId.isEmpty) {
           Get.off(() => LoginPage());
         } else if (authenticationController.loggedInUserData.value!.type ==
                 "driver" &&
             authenticationController.loggedInUserData.value!.accountCreated ==
                 false) {
           Get.off(() => DriverDetails());
-        }
-        else if (authenticationController.loggedInUserData.value!.type ==
-            "student" &&
+        } else if (authenticationController
+                .loggedInUserData.value?.emailVerified ==
+            false) {
+          // authenticationController.resendCode(
+          //     email: authenticationController.loggedInUserData.value!.email);
+          Get.off(() => EmailVerification());
+        } else if (authenticationController.loggedInUserData.value!.type ==
+                "student" &&
             authenticationController.loggedInUserData.value!.accountCreated ==
                 false) {
-
           Get.off(() => StudentDetails());
-        }
-        else{
+        } else {
           print("hello iam logged in");
           if (authenticationController.loggedInUserData.value!.type ==
               "driver") {
             Get.off(() => DriverHome());
-            await drivercontroller.getDriverById(authenticationController.loggedInUserData.value!.userId);
+            await drivercontroller.getDriverById(
+                authenticationController.loggedInUserData.value!.userId);
             drivercontroller.getStudents();
-
-          }
-          else if (authenticationController.loggedInUserData.value!.type ==
-              "student" &&
+          } else if (authenticationController.loggedInUserData.value!.type ==
+                  "student" &&
               authenticationController.loggedInUserData.value!.accountCreated ==
                   true) {
             studentController.getStudentById();
@@ -79,11 +83,11 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           Center(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: BorderRadius.circular(125),
               child: Image.asset(
                 "assets/images/logo.jpg",
-                height: 100,
-                width: 100,
+                height: 250,
+                width: 250,
               ),
             ),
           ),

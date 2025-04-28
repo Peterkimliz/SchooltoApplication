@@ -8,6 +8,7 @@ class CommonText extends StatelessWidget {
   final FontWeight fontWeight;
   final String fontFamily;
   final TextDecoration textDecoration;
+  final TextAlign textAlign;
   CommonText(
       {super.key,
       required this.name,
@@ -15,13 +16,14 @@ class CommonText extends StatelessWidget {
       this.textSize = 14.0,
       this.fontWeight = FontWeight.normal,
       this.fontFamily = "RedHatLight",
-      this.textDecoration = TextDecoration.none});
+      this.textDecoration = TextDecoration.none,
+      this.textAlign=TextAlign.start});
 
   @override
   Widget build(BuildContext context) {
     return Text(name,
         softWrap: true,
-
+       textAlign: textAlign,
         style: TextStyle(
             decoration: textDecoration,
             decorationColor: textColor,
