@@ -27,7 +27,7 @@ Future<void> oneSignal() async {
 void initOneSignal() {
   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.initialize(oneSignalKey);
-  OneSignal.Notifications.requestPermission(true);
+  OneSignal.Notifications.requestPermission(false);
 }
 
 oneSignalObservers() {

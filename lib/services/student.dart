@@ -43,27 +43,21 @@ class StudentService {
       required double latitude,
       required double longitude}) async {
     var response = await DbBase.databaseRequest(
-        "$student/geomap/$id?isSubScribed=true&latitude=$latitude&longitude=$longitude&radius=1",
+        "$student/geomap/$id?isSubScribed=true&latitude=$latitude&longitude=$longitude&radius=500",
         DbBase.getRequest);
     return jsonDecode(response);
   }
 
-  static  updateSubStatus({String? id, required bool status}) async {
+  static updateSubStatus({String? id, required bool status}) async {
     var response = await DbBase.databaseRequest(
-        "$student/subscription/$id",
-        DbBase.putRequest,
+        "$student/subscription/$id", DbBase.putRequest,
         body: {"subsribed": status});
     return jsonDecode(response);
   }
 
-  static detachDriver({required String id}) async{
+  static detachDriver({required String id}) async {
     var response = await DbBase.databaseRequest(
-        "$student/detachDriver/$id",
-        DbBase.putRequest);
+        "$student/detachDriver/$id", DbBase.putRequest);
     return jsonDecode(response);
-
-
   }
-
-
 }

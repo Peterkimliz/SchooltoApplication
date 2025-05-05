@@ -37,21 +37,22 @@ class _DriverMapState extends State<DriverMap> {
             drivercontroller.currentPosition.value!.longitude),
         zoom: 14.0)));
 
-
-    if(drivercontroller.onlineOfflineStatus.value){
+    if (drivercontroller.onlineOfflineStatus.value) {
       await drivercontroller.getPlaceDetails(
-           drivercontroller.currentPosition.value!.longitude,
-           drivercontroller.currentPosition.value!.latitude,
-        showDialog: false
-      );
+          drivercontroller.currentPosition.value!.latitude,
+          drivercontroller.currentPosition.value!.longitude,
+          showDialog: false);
       drivercontroller.updateDriverLocation();
       drivercontroller.getStudentsByDriverAndLocation(
           longitude: drivercontroller.currentPosition.value!.longitude,
           latitude: drivercontroller.currentPosition.value!.latitude);
-      print("Hello there");
       drivercontroller.getMarkers();
-    }
 
+      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          target: LatLng(drivercontroller.currentPosition.value!.latitude,
+              drivercontroller.currentPosition.value!.longitude),
+          zoom: 14.0)));
+    }
   }
 
   @override
@@ -111,25 +112,25 @@ class _DriverMapState extends State<DriverMap> {
                     Positioned(
                         top: 15,
                         right: 10,
-                        child: Obx(()=>LiteRollingSwitch(
-                          value: drivercontroller.onlineOfflineStatus.value,
-                          textOn: "Online",
-                          textOff: "Offline",
-                          colorOff: Colors.red,
-                          colorOn: Colors.green,
-                          iconOff: Icons.remove_circle_outline,
-                          iconOn: Icons.done,
-                          textOffColor: Colors.white,
-                          textOnColor: Colors.white,
-                          textSize: 18.0,
-                          onChanged: (state) {
-                            drivercontroller.changeOnlineStatus(state);
-                            print("The changed value is $state");
-                          },
-                          onTap: () {},
-                          onDoubleTap: () {},
-                          onSwipe: () {},
-                        ))
+                        child: Obx(() => LiteRollingSwitch(
+                              value: drivercontroller.onlineOfflineStatus.value,
+                              textOn: "Online",
+                              textOff: "Offline",
+                              colorOff: Colors.red,
+                              colorOn: Colors.green,
+                              iconOff: Icons.remove_circle_outline,
+                              iconOn: Icons.done,
+                              textOffColor: Colors.white,
+                              textOnColor: Colors.white,
+                              textSize: 18.0,
+                              onChanged: (state) {
+                                drivercontroller.changeOnlineStatus(state);
+                                print("The changed value is $state");
+                              },
+                              onTap: () {},
+                              onDoubleTap: () {},
+                              onSwipe: () {},
+                            ))
 
                         // Switch(value: true, onChanged: (value) {})
 

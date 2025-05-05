@@ -21,12 +21,9 @@ class _StudentMapState extends State<StudentMap> {
 
   late GoogleMapController mapController;
 
-
-
   @override
   void initState() {
     getCurrentLocationAndAnimate();
-
     Timer.periodic(const Duration(minutes: 1), (Timer t) {
       print("Getting location");
       getCurrentLocationAndAnimate();
@@ -47,25 +44,21 @@ class _StudentMapState extends State<StudentMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Obx(()=>GoogleMap(
-            zoomGesturesEnabled: true,
-            zoomControlsEnabled: false,
-            myLocationEnabled: true,
-            markers: studentController.markers,
-            padding: const EdgeInsets.only(top: 300.0),
-            polylines: Set<Polyline>.of(studentController.polylines.values),
-            initialCameraPosition: const CameraPosition(
-              target: LatLng(37.7749, -122.4194),
-              zoom: 14,
-            ),
-            onMapCreated: (GoogleMapController controller) {
-              mapController = controller;
-            },
-          ))),
+          child: Obx(() => GoogleMap(
+                zoomGesturesEnabled: true,
+                zoomControlsEnabled: false,
+                myLocationEnabled: true,
+                markers: studentController.markers,
+                padding: const EdgeInsets.only(top: 300.0),
+                polylines: Set<Polyline>.of(studentController.polylines.values),
+                initialCameraPosition: const CameraPosition(
+                  target: LatLng(37.7749, -122.4194),
+                  zoom: 14,
+                ),
+                onMapCreated: (GoogleMapController controller) {
+                  mapController = controller;
+                },
+              ))),
     );
   }
-
-
-
-
 }

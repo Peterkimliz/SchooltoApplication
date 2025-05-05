@@ -295,8 +295,8 @@ class StudentController extends GetxController {
   }
 
   getPolyline() async {
-    AuthenticationController authenticationController =
-        Get.find<AuthenticationController>();
+    print("Hello peter iam called from here ");
+    AuthenticationController authenticationController = Get.find<AuthenticationController>();
     await Get.find<Drivercontroller>().getDriverById(
         authenticationController.currentStudent.value!.driver!.id!);
     polylineCoordinates.clear();

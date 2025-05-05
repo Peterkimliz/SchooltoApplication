@@ -115,7 +115,6 @@ class AuthenticationController extends GetxController {
           "password": textEdittingControllerSignUpPassword.text
         };
         showDefaultGetDialog(message: "Logging  in ...");
-
         var response = await Auth.loginUser(body);
         Get.back();
         print("the response is ${response}");
@@ -131,7 +130,8 @@ class AuthenticationController extends GetxController {
             ),
             backgroundColor: Colors.red,
           ));
-        } else {
+        }
+        else {
           SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
           sharedPreferences.setString("token", response["token"]);
@@ -142,12 +142,10 @@ class AuthenticationController extends GetxController {
           sharedPreferences.setString("email", response["user"]["email"]);
           await getUserDetails();
           OneSignal.login(response["user"]["email"]);
-          if (response["user"]["type"] == "student" &&
-              response["user"]["accountCreated"] == false) {
+          if (response["user"]["type"] == "student" && response["user"]["accountCreated"] == false) {
             Get.off(() => StudentDetails());
-          } else if (response["user"]["type"] == "driver" &&
-              response["user"]["accountCreated"] == false) {
-            Get.to(() => DriverDetails());
+          } else if (response["user"]["type"] == "driver" && response["user"]["accountCreated"] == false) {
+            Get.off(() => DriverDetails());
           } else {
             if (response["user"]["type"] == "student") {
               Get.find<StudentController>().getStudentById();
@@ -158,7 +156,7 @@ class AuthenticationController extends GetxController {
                   .getDriverById(loggedInUserData.value!.userId!);
               await Get.find<Drivercontroller>().getStudents();
 
-              Get.to(() => DriverHome());
+              Get.off(() => DriverHome());
             }
           }
         }

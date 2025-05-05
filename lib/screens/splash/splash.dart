@@ -44,8 +44,8 @@ class _SplashScreenState extends State<SplashScreen> {
         } else if (authenticationController
                 .loggedInUserData.value?.emailVerified ==
             false) {
-          // authenticationController.resendCode(
-          //     email: authenticationController.loggedInUserData.value!.email);
+            // authenticationController.resendCode(
+            //     email: authenticationController.loggedInUserData.value!.email);
           Get.off(() => EmailVerification());
         } else if (authenticationController.loggedInUserData.value!.type ==
                 "student" &&
@@ -76,23 +76,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Center(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(125),
-              child: Image.asset(
-                "assets/images/logo.jpg",
-                height: 250,
-                width: 250,
-              ),
-            ),
-          ),
-        ],
-      )),
+      backgroundColor: Colors.amber,
+      body: Image.asset(
+        "assets/images/splashscreen.jpeg",
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+      ),
     );
   }
 }
