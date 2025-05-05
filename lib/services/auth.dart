@@ -21,7 +21,7 @@ class Auth {
 
   static resendOtp({required String email}) async {
     var response = await DbBase.databaseRequest(
-        "$resend?email=$email", DbBase.postRequest);
+        "$resend?email=${email.trim()}", DbBase.postRequest);
     return json.decode(response);
   }
 

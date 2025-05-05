@@ -1,14 +1,21 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:schoolsto/controllers/AuthenticationController.dart';
 import 'package:schoolsto/controllers/DriverController.dart';
 import 'package:schoolsto/utils/functions.dart';
 import 'package:schoolsto/widgets/common_text.dart';
 import 'package:get/get.dart';
 
 class EditPage extends StatelessWidget {
-   EditPage({super.key});
+  EditPage({super.key}) {
+    drivercontroller.assignFields(
+        driver: authenticationController.currentDriver.value!);
+  }
+
   final Drivercontroller drivercontroller = Get.find<Drivercontroller>();
+  final AuthenticationController authenticationController =
+      Get.find<AuthenticationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +33,12 @@ class EditPage extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
         actions: [
-          IconButton(onPressed: (){}, icon: const Icon(Icons.check,color: Colors.amber,))
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.check,
+                color: Colors.amber,
+              ))
         ],
       ),
       body: SingleChildScrollView(
@@ -36,7 +48,6 @@ class EditPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 15),
-
               Center(
                 child: Stack(
                   clipBehavior: Clip.none,
@@ -64,9 +75,8 @@ class EditPage extends StatelessWidget {
                       right: -10,
                       child: InkWell(
                         onTap: () {
-                        imageDialog(page: "driver");
-                        
-                         },
+                          imageDialog(page: "driver");
+                        },
                         child: const CircleAvatar(
                           radius: 18,
                           backgroundColor: Colors.amber,
@@ -114,7 +124,6 @@ class EditPage extends StatelessWidget {
                           const BorderSide(color: Colors.grey, width: 1.0),
                     )),
               ),
-             
               const SizedBox(height: 10),
               CommonText(
                 name: "Phone",
@@ -148,10 +157,6 @@ class EditPage extends StatelessWidget {
                           const BorderSide(color: Colors.grey, width: 1.0),
                     )),
               ),
-              
-             
-             
-             
               const SizedBox(height: 20),
               Obx(() => drivercontroller.accountType.value == 0
                   ? Column(
@@ -255,7 +260,6 @@ class EditPage extends StatelessWidget {
                   ],
                 ),
               ),
-            
             ],
           ),
         ),

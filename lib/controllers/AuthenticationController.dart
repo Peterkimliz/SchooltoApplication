@@ -38,20 +38,20 @@ class AuthenticationController extends GetxController {
 
   RxBool signupPasswordObscurred = RxBool(true);
   TextEditingController textEdittingControllerSignUpEmail =
-  TextEditingController();
+      TextEditingController();
   TextEditingController textEdittingControllerSignUpPassword =
-  TextEditingController();
+      TextEditingController();
   Rxn<DriverModel> currentDriver = Rxn(null);
   GlobalKey<FormState> forgotKey = GlobalKey();
 
   TextEditingController textEditingControllerSignInEmail =
-  TextEditingController();
+      TextEditingController();
   TextEditingController textEditingControllerSignUpEmail =
-  TextEditingController();
+      TextEditingController();
   TextEditingController textEditingControllerConfirmResetPassword =
-  TextEditingController();
+      TextEditingController();
   TextEditingController textEditingControllerresetPassword =
-  TextEditingController();
+      TextEditingController();
 
   GlobalKey<FormState> forgotResetPasswordKey = GlobalKey();
 
@@ -68,8 +68,8 @@ class AuthenticationController extends GetxController {
           "type": accountType.value == 0
               ? "student"
               : accountType.value == 1
-              ? "driver"
-              : "school"
+                  ? "driver"
+                  : "school"
         };
 
         showDefaultGetDialog(message: "Creating Account...");
@@ -89,12 +89,13 @@ class AuthenticationController extends GetxController {
         } else {
           showEmailDialog();
           SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
+              await SharedPreferences.getInstance();
           sharedPreferences.setString("token", response["token"]);
           sharedPreferences.setString("userId", response["user"]["id"]);
           sharedPreferences.setString("type", response["user"]["type"]);
           sharedPreferences.setBool("accountCreated", false);
-          sharedPreferences.setBool("emailVerified", response["user"]["emailVerified"]);
+          sharedPreferences.setBool(
+              "emailVerified", response["user"]["emailVerified"]);
           sharedPreferences.setString("email", response["user"]["email"]);
 
           getUserDetails();
@@ -119,7 +120,6 @@ class AuthenticationController extends GetxController {
         Get.back();
         print("the response is ${response}");
 
-
         if (response["message"] != null) {
           ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
             content: CommonText(
@@ -130,21 +130,24 @@ class AuthenticationController extends GetxController {
             ),
             backgroundColor: Colors.red,
           ));
-        }
-        else {
+        } else {
           SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
+              await SharedPreferences.getInstance();
           sharedPreferences.setString("token", response["token"]);
           sharedPreferences.setString("userId", response["user"]["id"]);
           sharedPreferences.setString("type", response["user"]["type"]);
-          sharedPreferences.setBool("accountCreated", response["user"]["accountCreated"]);
-          sharedPreferences.setBool("emailVerified", response["user"]["emailVerified"]);
+          sharedPreferences.setBool(
+              "accountCreated", response["user"]["accountCreated"]);
+          sharedPreferences.setBool(
+              "emailVerified", response["user"]["emailVerified"]);
           sharedPreferences.setString("email", response["user"]["email"]);
           await getUserDetails();
           OneSignal.login(response["user"]["email"]);
-          if (response["user"]["type"] == "student" && response["user"]["accountCreated"] == false) {
+          if (response["user"]["type"] == "student" &&
+              response["user"]["accountCreated"] == false) {
             Get.off(() => StudentDetails());
-          } else if (response["user"]["type"] == "driver" && response["user"]["accountCreated"] == false) {
+          } else if (response["user"]["type"] == "driver" &&
+              response["user"]["accountCreated"] == false) {
             Get.off(() => DriverDetails());
           } else {
             if (response["user"]["type"] == "student") {
@@ -179,8 +182,11 @@ class AuthenticationController extends GetxController {
     print("email is $userId");
     bool isLoggedIn = sharedPreferences.getBool("accountCreated") ?? false;
     LoggedData loggedData = LoggedData(
-      emailVerified: emailVerified,
-        userId: userId, accountCreated: isLoggedIn, type: type, email: email);
+        emailVerified: emailVerified,
+        userId: userId,
+        accountCreated: isLoggedIn,
+        type: type,
+        email: email);
     loggedInUserData.value = loggedData;
   }
 
@@ -197,14 +203,8 @@ class AuthenticationController extends GetxController {
     auth.loggedInUserData.value = null;
     auth.currentDriver.value = null;
     auth.currentStudent.value = null;
-    Get
-        .find<StudentController>()
-        .currentIndex
-        .value = 0;
-    Get
-        .find<Drivercontroller>()
-        .currentIndex
-        .value = 0;
+    Get.find<StudentController>().currentIndex.value = 0;
+    Get.find<Drivercontroller>().currentIndex.value = 0;
     Get.offAll(() => LoginPage());
   }
 
@@ -213,7 +213,7 @@ class AuthenticationController extends GetxController {
       if (forgotKey.currentState!.validate()) {
         showDefaultGetDialog(message: "Sending otp");
         var response =
-        await Auth.resendOtp(email: textEditingControllerSignInEmail.text);
+            await Auth.resendOtp(email: textEditingControllerSignInEmail.text);
         debugPrintMessage("The response is $response");
         Get.back();
         if (response["status"] == 404) {
@@ -243,6 +243,7 @@ class AuthenticationController extends GetxController {
   }
 
   resendCode({required String email, String? message}) async {
+    print("The email is $email");
     try {
       showDefaultGetDialog(message: message ?? "Resending the  otp");
       var response = await Auth.resendOtp(email: email);
@@ -281,8 +282,9 @@ class AuthenticationController extends GetxController {
     }
   }
 
-  void verifyOtpCode({required String verificationCode,
-    required bool isForgotPassword}) async {
+  void verifyOtpCode(
+      {required String verificationCode,
+      required bool isForgotPassword}) async {
     try {
       showDefaultGetDialog(message: "Verifying otp");
       var response = await Auth.verifyOtp(verificationCode);
@@ -322,11 +324,11 @@ class AuthenticationController extends GetxController {
                   text: TextSpan(
                     style: const TextStyle(color: Colors.black, fontSize: 16),
                     children: [
-                      const TextSpan(text: 'We have sent a verification Code'),
+                      const TextSpan(text: 'We have sent a verification Code '),
                       TextSpan(
-                        text: loggedInUserData.value == null
+                        text: loggedInUserData.value!.email.trim().isEmpty
                             ? textEditingControllerSignInEmail.text
-                            : ' ${loggedInUserData.value!.email}',
+                            : loggedInUserData.value?.email,
                         style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -340,8 +342,7 @@ class AuthenticationController extends GetxController {
                     title: "Got It",
                     onTap: () {
                       Get.back();
-                      Get.offAll(() =>
-                          EmailVerification(
+                      Get.offAll(() => EmailVerification(
                             isForgotPassword: isForgotPassword,
                           ));
                       startCountdown();

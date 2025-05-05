@@ -486,4 +486,9 @@ class Drivercontroller extends GetxController {
       Get.back();
     }
   }
+
+  assignFields({required DriverModel driver}) {
+    textEdittingControllerName.text = driver.fullname!;
+    textEdittingControllerPhone.text = driver.phoneNumber!;
+  }
 }

@@ -131,13 +131,10 @@ class EmailVerification extends StatelessWidget {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   authController.resendCode(
-                                      email: authController.loggedInUserData
-                                                  .value?.type ==
-                                              "student"
-                                          ? authController
-                                              .currentStudent.value!.email!
-                                          : authController
-                                              .currentDriver.value!.email!);
+                                      email: authController.loggedInUserData.value?.type ==
+                                          "student"
+                                          ? ' ${authController.currentStudent.value?.email ?? authController.textEditingControllerSignInEmail.text}'
+                                          : ' ${authController.currentDriver.value?.email ?? authController.textEditingControllerSignInEmail.text}',);
                                 }),
                         ],
                       ),
